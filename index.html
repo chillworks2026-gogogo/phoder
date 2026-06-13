@@ -14,8 +14,13 @@
       --card: #ffffff;
       --accent: #b82e3d;
       --accent-hover: #9a2534;
+      --accent-soft: rgba(184, 46, 61, 0.1);
       --focus-ring: #005fcc;
       --border: rgba(0, 0, 0, 0.08);
+      --shadow: rgba(0, 0, 0, 0.06);
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --duration-fast: 180ms;
+      --duration-enter: 420ms;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -26,8 +31,10 @@
         --card: #1c1c1e;
         --accent: #ff7b88;
         --accent-hover: #ff96a0;
+        --accent-soft: rgba(255, 123, 136, 0.14);
         --focus-ring: #6cb4ff;
         --border: rgba(255, 255, 255, 0.12);
+        --shadow: rgba(0, 0, 0, 0.35);
       }
     }
 
@@ -38,6 +45,12 @@
     html {
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      html {
+        scroll-behavior: smooth;
+      }
     }
 
     body {
@@ -60,6 +73,7 @@
       border: 2px solid var(--focus-ring);
       font-weight: 600;
       text-decoration: none;
+      transition: top var(--duration-fast) var(--ease-out);
     }
 
     .skip-link:focus {
@@ -73,7 +87,7 @@
     }
 
     header {
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
 
     h1 {
@@ -87,12 +101,123 @@
       font-size: 0.95rem;
     }
 
+    .toc {
+      position: sticky;
+      top: 12px;
+      z-index: 10;
+      margin-bottom: 28px;
+      padding: 16px 18px;
+      background: color-mix(in srgb, var(--card) 92%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .toc-title {
+      margin: 0 0 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .toc-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .toc-list a {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      color: var(--text);
+      background: transparent;
+      border: 1px solid transparent;
+      text-decoration: none;
+      font-size: 0.875rem;
+      line-height: 1.3;
+      transition:
+        color var(--duration-fast) var(--ease-out),
+        background var(--duration-fast) var(--ease-out),
+        border-color var(--duration-fast) var(--ease-out),
+        transform var(--duration-fast) var(--ease-out);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .toc-list a:hover {
+        color: var(--accent);
+        background: var(--accent-soft);
+        border-color: color-mix(in srgb, var(--accent) 25%, transparent);
+        transform: translateY(-1px);
+      }
+    }
+
+    .toc-list a[aria-current="location"] {
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+      font-weight: 600;
+    }
+
     .card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 24px;
       margin-bottom: 20px;
+      scroll-margin-top: 88px;
+      transition:
+        transform var(--duration-fast) var(--ease-out),
+        box-shadow var(--duration-fast) var(--ease-out),
+        border-color var(--duration-fast) var(--ease-out);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px var(--shadow);
+        border-color: color-mix(in srgb, var(--accent) 18%, var(--border));
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .enter {
+        animation: enter-up var(--duration-enter) var(--ease-out) both;
+      }
+
+      @keyframes enter-up {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      header.enter { animation-delay: 40ms; }
+      .toc.enter { animation-delay: 100ms; }
+      .card.enter:nth-of-type(1) { animation-delay: 160ms; }
+      .card.enter:nth-of-type(2) { animation-delay: 220ms; }
+      .card.enter:nth-of-type(3) { animation-delay: 280ms; }
+      .card.enter:nth-of-type(4) { animation-delay: 340ms; }
+      .card.enter:nth-of-type(5) { animation-delay: 400ms; }
+      .card.enter:nth-of-type(6) { animation-delay: 460ms; }
+      .card.enter:nth-of-type(7) { animation-delay: 520ms; }
+      .card.enter:nth-of-type(8) { animation-delay: 580ms; }
+      .card.enter:nth-of-type(9) { animation-delay: 640ms; }
+      .card.enter:nth-of-type(10) { animation-delay: 700ms; }
+      .card.enter:nth-of-type(11) { animation-delay: 760ms; }
+      .card.enter:nth-of-type(12) { animation-delay: 820ms; }
+      footer.enter { animation-delay: 880ms; }
     }
 
     h2 {
@@ -114,10 +239,16 @@
       text-decoration: underline;
       text-decoration-thickness: 1px;
       text-underline-offset: 0.18em;
+      transition:
+        color var(--duration-fast) var(--ease-out),
+        text-decoration-color var(--duration-fast) var(--ease-out);
     }
 
-    a:hover {
-      color: var(--accent-hover);
+    @media (hover: hover) and (pointer: fine) {
+      a:hover {
+        color: var(--accent-hover);
+        text-decoration-thickness: 2px;
+      }
     }
 
     a:focus-visible {
@@ -137,24 +268,45 @@
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
   <main id="main-content">
-    <header>
+    <header class="enter">
       <h1>Phoder Privacy Policy</h1>
-      <p class="meta">Effective date: June 3, 2026 · Last updated: June 3, 2026</p>
+      <p class="meta">Effective date: June 3, 2026 · Last updated: June 13, 2026</p>
     </header>
 
-    <section class="card" aria-labelledby="overview-heading">
+    <nav class="toc enter" aria-label="Table of contents">
+      <p class="toc-title">On this page</p>
+      <ol class="toc-list">
+        <li><a href="#overview-heading">Overview</a></li>
+        <li><a href="#information-heading">Information</a></li>
+        <li><a href="#not-collect-heading">Not collected</a></li>
+        <li><a href="#storage-heading">Storage</a></li>
+        <li><a href="#apple-services-heading">Apple services</a></li>
+        <li><a href="#advertising-heading">Advertising</a></li>
+        <li><a href="#permissions-heading">Permissions</a></li>
+        <li><a href="#retention-heading">Retention</a></li>
+        <li><a href="#children-heading">Children</a></li>
+        <li><a href="#international-heading">International</a></li>
+        <li><a href="#changes-heading">Changes</a></li>
+        <li><a href="#contact-heading">Contact</a></li>
+      </ol>
+    </nav>
+
+    <section class="card enter" aria-labelledby="overview-heading">
       <h2 id="overview-heading">Overview</h2>
       <p>
         Phoder is a local photo organizer for iPhone and iPad. It helps you browse, organize,
-        find duplicates, and build collections from the Apple Photos library on your device.
+        find duplicates, prune low-quality photos, and manage a Bin from the Apple Photos library on your device.
       </p>
       <p>
         We designed Phoder to process your photos on your device. Phoder does not operate user
-        accounts, advertising, analytics, or cloud storage for your photo content.
+        accounts or cloud storage for your photo content, and your photos never leave your device
+        (beyond your own iCloud Photos library, if you use it). To keep Phoder free, the app shows
+        ads from Google AdMob — see the <a href="#advertising-heading">Advertising</a> section for
+        what that involves.
       </p>
     </section>
 
-    <section class="card" aria-labelledby="information-heading">
+    <section class="card enter" aria-labelledby="information-heading">
       <h2 id="information-heading">Information Phoder Processes</h2>
       <p>
         With your permission, Phoder accesses photos and videos in your Apple Photos library so
@@ -163,12 +315,10 @@
       </p>
       <p>Phoder may also process the following data locally on your device to power app features:</p>
       <ul>
-        <li>Photo metadata, such as date, media type, favorites, and location coordinates attached to photos</li>
-        <li>On-device search indexes, including keywords generated from photo metadata, places, faces, and on-device image analysis</li>
+        <li>Photo metadata, such as date, media type, and favorites</li>
+        <li>On-device quality scan results, such as blur, dark exposure, and closed-eye detection</li>
         <li>Duplicate detection fingerprints and cached duplicate group results</li>
-        <li>Face grouping results used for people-related filters</li>
-        <li>Place names derived from photo location data</li>
-        <li>Your collection filters, viewed-photo markers, and organization statistics</li>
+        <li>Your viewed-photo markers and organization statistics</li>
       </ul>
       <p>
         This information is used only to provide Phoder features you use. It is not uploaded to
@@ -177,23 +327,22 @@
       </p>
     </section>
 
-    <section class="card" aria-labelledby="not-collect-heading">
+    <section class="card enter" aria-labelledby="not-collect-heading">
       <h2 id="not-collect-heading">What We Do Not Collect</h2>
       <ul>
         <li>We do not require you to create an account</li>
         <li>We do not sell personal information</li>
-        <li>We do not use your photos for advertising</li>
-        <li>We do not collect usage analytics for tracking or profiling</li>
-        <li>We do not upload your photo library to Phoder cloud storage</li>
+        <li>We do not use your photos to target ads, and we never share your photos with advertisers</li>
+        <li>We do not operate our own analytics or upload your photo library to Phoder cloud storage</li>
       </ul>
     </section>
 
-    <section class="card" aria-labelledby="storage-heading">
+    <section class="card enter" aria-labelledby="storage-heading">
       <h2 id="storage-heading">On-Device Storage</h2>
       <p>
-        Phoder stores app data locally on your device, such as collection settings, search
-        indexes, duplicate scan caches, place-name caches, and organization totals. Some data may
-        also be stored in the iOS Keychain or Application Support directory on your device.
+        Phoder stores app data locally on your device, such as quality scan caches, duplicate
+        scan caches, and organization totals. Some data may also be stored in the iOS Keychain or
+        Application Support directory on your device.
       </p>
       <p>
         Changes you make through Phoder, including moving photos to Bin or deleting photos,
@@ -202,22 +351,43 @@
       </p>
     </section>
 
-    <section class="card" aria-labelledby="apple-services-heading">
+    <section class="card enter" aria-labelledby="apple-services-heading">
       <h2 id="apple-services-heading">Apple and On-Device Services</h2>
       <p>Phoder relies on Apple system frameworks and services, including:</p>
       <ul>
         <li><strong>Apple Photos</strong> to read and modify your photo library</li>
-        <li><strong>On-device Vision analysis</strong> to generate content keywords during local indexing</li>
-        <li><strong>Apple reverse geocoding / Maps services</strong> to convert location coordinates into place names</li>
+        <li><strong>On-device Vision analysis</strong> to detect low-quality photos during local Prune scans</li>
       </ul>
       <p>
-        When Phoder uses Apple location or mapping services, coordinates may be sent to Apple to
-        obtain place names. Your photo files themselves are not uploaded to Phoder for that
-        purpose. Apple’s handling of data is governed by Apple’s privacy policy.
+        Your photo files are processed on your device for Prune and duplicate detection. Apple’s
+        handling of any system services is governed by Apple’s privacy policy.
       </p>
     </section>
 
-    <section class="card" aria-labelledby="permissions-heading">
+    <section class="card enter" aria-labelledby="advertising-heading">
+      <h2 id="advertising-heading">Advertising</h2>
+      <p>
+        Phoder is free and is supported by ads served through
+        <strong>Google AdMob</strong>. To deliver, cap, and measure those ads, Google’s SDK may
+        collect and process device and usage information, such as advertising and device
+        identifiers (for example, the IDFA or IDFV), coarse location derived from your IP address,
+        and ad-interaction data.
+      </p>
+      <p>
+        On Apple devices, Phoder asks for your permission through Apple’s App Tracking
+        Transparency prompt before any data is used to personalize ads or track you across other
+        apps and websites. If you decline, AdMob shows non-personalized ads instead. You can change
+        this choice at any time in iOS Settings &rsaquo; Privacy &amp; Security &rsaquo; Tracking.
+      </p>
+      <p>
+        Phoder never shares your photos, videos, or library contents with advertisers, and your
+        photos are never used to target ads. Google’s handling of data collected through AdMob is
+        governed by
+        <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">Google’s Privacy &amp; Terms</a>.
+      </p>
+    </section>
+
+    <section class="card enter" aria-labelledby="permissions-heading">
       <h2 id="permissions-heading">Permissions</h2>
       <p>
         Phoder requests access to your photo library so it can display and organize your photos.
@@ -230,7 +400,7 @@
       </p>
     </section>
 
-    <section class="card" aria-labelledby="retention-heading">
+    <section class="card enter" aria-labelledby="retention-heading">
       <h2 id="retention-heading">Data Retention and Deletion</h2>
       <p>
         Local Phoder caches and settings remain on your device until you delete the app, clear
@@ -243,7 +413,7 @@
       </p>
     </section>
 
-    <section class="card" aria-labelledby="children-heading">
+    <section class="card enter" aria-labelledby="children-heading">
       <h2 id="children-heading">Children’s Privacy</h2>
       <p>
         Phoder is not directed to children under 13, and we do not knowingly collect personal
@@ -251,7 +421,7 @@
       </p>
     </section>
 
-    <section class="card" aria-labelledby="international-heading">
+    <section class="card enter" aria-labelledby="international-heading">
       <h2 id="international-heading">International Users</h2>
       <p>
         Phoder processes your information on your device. If you use iCloud Photos or other
@@ -260,7 +430,7 @@
       </p>
     </section>
 
-    <section class="card" aria-labelledby="changes-heading">
+    <section class="card enter" aria-labelledby="changes-heading">
       <h2 id="changes-heading">Changes to This Policy</h2>
       <p>
         We may update this Privacy Policy from time to time. When we do, we will revise the
@@ -269,7 +439,7 @@
       </p>
     </section>
 
-    <section class="card" aria-labelledby="contact-heading">
+    <section class="card enter" aria-labelledby="contact-heading">
       <h2 id="contact-heading">Contact</h2>
       <p>
         If you run into a problem with Phoder or have questions about this Privacy Policy, email us at
@@ -277,9 +447,56 @@
       </p>
     </section>
 
-    <footer>
+    <footer class="enter">
       <p>© 2026 Phoder · Not affiliated with Apple Inc.</p>
     </footer>
   </main>
+
+  <script>
+    (function () {
+      var tocLinks = document.querySelectorAll(".toc-list a");
+      var headingIds = [
+        "overview-heading", "information-heading", "not-collect-heading",
+        "storage-heading", "apple-services-heading", "permissions-heading",
+        "retention-heading", "children-heading", "international-heading",
+        "changes-heading", "contact-heading"
+      ];
+
+      var sections = headingIds.map(function (id) {
+        var heading = document.getElementById(id);
+        return heading && heading.closest(".card");
+      }).filter(Boolean);
+
+      if (!("IntersectionObserver" in window) || sections.length === 0) {
+        return;
+      }
+
+      var activeId = headingIds[0];
+
+      function setActive(id) {
+        if (id === activeId) return;
+        activeId = id;
+        tocLinks.forEach(function (link) {
+          if (link.getAttribute("href") === "#" + id) {
+            link.setAttribute("aria-current", "location");
+          } else {
+            link.removeAttribute("aria-current");
+          }
+        });
+      }
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var heading = entry.target.querySelector("[id]");
+            if (heading) setActive(heading.id);
+          }
+        });
+      }, { rootMargin: "-20% 0px -65% 0px", threshold: 0 });
+
+      sections.forEach(function (section) { observer.observe(section); });
+      setActive(headingIds[0]);
+    }());
+  </script>
 </body>
 </html>
