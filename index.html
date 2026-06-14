@@ -286,6 +286,7 @@
         <li><a href="#retention-heading">Retention</a></li>
         <li><a href="#children-heading">Children</a></li>
         <li><a href="#international-heading">International</a></li>
+        <li><a href="#accessibility-heading">Accessibility</a></li>
         <li><a href="#changes-heading">Changes</a></li>
         <li><a href="#contact-heading">Contact</a></li>
       </ol>
@@ -451,6 +452,55 @@
       </p>
     </section>
 
+    <section class="card enter" aria-labelledby="accessibility-heading" id="accessibility">
+      <h2 id="accessibility-heading">Accessibility</h2>
+      <p>
+        Phoder is designed to work with iPhone accessibility features. We continue to improve
+        support over time. If something does not work well with your assistive technology, email
+        <a href="mailto:chillworks2026@gmail.com">chillworks2026@gmail.com</a> and tell us what you
+        were trying to do.
+      </p>
+
+      <h3>Supported on iPhone</h3>
+      <ul>
+        <li>
+          <strong>VoiceOver</strong> — Tabs, buttons, photo thumbnails, Cleanup actions, and the
+          About screen include accessibility labels. In the photo viewer, you can use the bottom bar
+          (<strong>Bin</strong>, <strong>Undo</strong>, <strong>Prev</strong>, <strong>Next</strong>)
+          instead of swipe gestures. Advertisements are labeled “Advertisement.”
+        </li>
+        <li>
+          <strong>Dark Interface</strong> — Phoder follows your system Light or Dark appearance.
+        </li>
+        <li>
+          <strong>Reduced Motion</strong> — When Reduce Motion is enabled in iOS Settings, Phoder
+          shortens motion in the photo viewer.
+        </li>
+      </ul>
+
+      <h3>Known limitations</h3>
+      <ul>
+        <li>
+          Organizing photos is gesture-friendly by default (swipe left for Bin, swipe right for
+          Favorites). VoiceOver users should use the photo viewer bottom bar where swipes are
+          difficult.
+        </li>
+        <li>
+          Phoder does not yet fully support Dynamic Type (Larger Text) across every screen.
+        </li>
+        <li>
+          Phoder does not add captions or audio descriptions to your personal photos or videos.
+        </li>
+      </ul>
+
+      <h3>Privacy choices</h3>
+      <p>
+        To manage ad consent (EEA, UK, Switzerland), open <strong>About</strong> in the app and tap
+        <strong>Manage Ad Choices</strong>, or see the
+        <a href="#ad-consent">Changing or revoking ad consent</a> section above.
+      </p>
+    </section>
+
     <section class="card enter" aria-labelledby="changes-heading">
       <h2 id="changes-heading">Changes to This Policy</h2>
       <p>
@@ -480,7 +530,7 @@
         "overview-heading", "information-heading", "not-collect-heading",
         "storage-heading", "apple-services-heading", "advertising-heading",
         "permissions-heading", "retention-heading", "children-heading",
-        "international-heading", "changes-heading", "contact-heading"
+        "international-heading", "accessibility-heading", "changes-heading", "contact-heading"
       ];
 
       var sections = headingIds.map(function (id) {
